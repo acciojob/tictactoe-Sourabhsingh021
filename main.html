@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://fonts.googleapis.com/css2?family=Permanent+Marker&display=swap" rel="stylesheet">
     <title>Tic Tac Toe</title>
-
     <style>
         body {
             width: 100vw;
@@ -73,17 +72,18 @@
         }
     </style>
 </head>
-
 <body>
     <div class="container">
+		<h1>Tic Tac Toe</h1>
         <div id="setup">
-            <label for="player-1">Player 1</label>
-            <input type="text" id="player-1" placeholder="enter name">
+			
+            <label for="player1">Player 1</label>
+            <input type="text" id="player1" placeholder="enter name">
 
             <br><br>
 
-            <label for="player-2">Player 2</label>
-            <input type="text" id="player-2" placeholder="enter name">
+            <label for="player2">Player 2</label>
+            <input type="text" id="player2" placeholder="enter name">
 
             <br><br>
 
@@ -91,7 +91,7 @@
         </div>
 
         <div id="gameArea" class="hidden">
-            <h1>Tic Tac Toe</h1>
+            
             <div class="message"></div>
             <div class="board"></div>
         </div>
@@ -99,8 +99,8 @@
 
     <script>
         const submitBtn = document.getElementById("submit");
-        const player1 = document.getElementById("player-1");
-        const player2 = document.getElementById("player-2");
+        const player1 = document.getElementById("player1");
+        const player2 = document.getElementById("player2");
 
         const setup = document.getElementById("setup");
         const gameArea = document.getElementById("gameArea");
@@ -111,7 +111,7 @@
         let gameOver = false;
         let gameStarted = false;
 
-        const boardData = new Array(9);
+        const boardData = new Array(9).fill(undefined);
         const winningConditions = [
             [0, 1, 2],
             [3, 4, 5],
@@ -129,14 +129,12 @@
             for (let i = 0; i < 9; i++) {
                 const box = document.createElement("div");
                 box.classList.add("box");
-                box.id = i + 1; // ids 1 to 9
+                box.id = i + 1;
                 board.appendChild(box);
             }
         }
 
         function isWinner(currentPlayer, index) {
-            if (boardData[index] !== undefined) return false;
-
             boardData[index] = currentPlayer;
 
             const boxes = document.querySelectorAll(".box");
@@ -185,7 +183,6 @@
             if (e.target.textContent !== "") return;
 
             const index = Number(e.target.id) - 1;
-
             e.target.textContent = currentPlayer;
 
             const win = isWinner(currentPlayer, index);

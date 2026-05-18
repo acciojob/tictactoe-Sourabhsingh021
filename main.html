@@ -10,12 +10,14 @@
             height: 100vh;
             display: flex;
             justify-content: center;
+			overflow-x: hidden;
         }
 
         .container {
             width: 60%;
             height: 60%;
-            text-align: center;
+			margin: auto;
+			text-align:center;
         }
 
         h1 {
@@ -61,188 +63,107 @@
     <div class="container">
         <h1>Tic Tac Toe</h1>
         <label for="player-1">Player 1</label>
-        <input type="text" id="player1" placeholder="enter name">
+        <input type="text" id="player-1" placeholder="enter name">
         <br><br>
         <label for="player-2">player 2</label>
-        <input type="text" id="player2" placeholder="enter name">
+        <input type="text" id="player-2" placeholder="enter name">
         <br><br>
         <button id="submit">Start Game</button>
+
+        <p id="msg"></p>
+        <div class="board"></div>
     </div>
-
     <script>
-        let container = document.querySelector(".container");
-        let submit = document.getElementById("submit");
-
-        player1= document.getElementById("player1");
-        player2 = document.getElementById("player2");
-
-        submit.addEventListener("click", () => {
-            container.innerHTML = ""
-            let heading = document.createElement("h1");
-            heading.textContent = "Tic Tac Toe"
-
-            let player1Name = player1.value;
-            let player2Name = player2.value;
-
-            let player = player1Name;
-            let message = document.createElement("div");
-            message.textContent = `${player}, you're up`
 
 
-            let board = document.createElement("div");
-            board.classList.add("board");
+        // logic starts here
+        const submitBtn = document.getElementById("submit");
+        const player1 = document.getElementById("player-1")
+        const player2 = document.getElementById("player-2")
 
-            const result = Array(3).fill().map(() => Array(3).fill(""));
+        let currentPlayer = "X";
+        let gameOver = false;
+        let gameStarted = false;
 
+        submitBtn.addEventListener("click", () => {
+            if (!player1.value || !player2.value) {
+                console.log("input not filled")
+                return;
+            }
+
+            gameStarted = true;
+            submitBtn.disabled = true;
+
+            const board = document.querySelector(".board");
+            const msg = document.getElementById("msg");
+            msg.textContent = `${player1.value}, you're up`;
+
+            //creating board
             for (let i = 0; i < 9; i++) {
                 let box = document.createElement("div");
                 box.classList.add("box");
-				box.id = i;
+                box.dataset.index = i;
                 board.appendChild(box);
-
-                box.addEventListener("click", (e, index) => {
-                    if (player === player1Name) {
-                        box.textContent = "X"
-
-                        if (i === 0) result[0][0] = "X";
-                        else if (i === 1) result[0][1] = "X";
-                        else if (i === 2) result[0][2] = "X";
-                        else if (i === 3) result[1][0] = "X";
-                        else if (i === 4) result[1][1] = "X";
-                        else if (i === 5) result[1][2] = "X";
-                        else if (i === 6) result[2][0] = "X";
-                        else if (i === 7) result[2][1] = "X";
-                        else result[2][2] = "X";
-
-                        player = player2Name;
-                        message.textContent = `${player}, you're up`;
-
-                    } else {
-                        box.textContent = "O"
-
-                        if (i === 0) result[0][0] = "O";
-                        else if (i === 1) result[0][1] = "O";
-                        else if (i === 2) result[0][2] = "O";
-                        else if (i === 3) result[1][0] = "O";
-                        else if (i === 4) result[1][1] = "O";
-                        else if (i === 5) result[1][2] = "O";
-                        else if (i === 6) result[2][0] = "O";
-                        else if (i === 7) result[2][1] = "O";
-                        else result[2][2] = "O";
-                        console.log(result)
-
-                        player = player1Name;
-                        message.textContent = `${player}, you're up`;
-                    }
-
-                    let boxes = document.querySelectorAll(".box")
-                    console.log(boxes);
-
-                    let winner = false;
-
-                    if (result[0][0] === result[0][1] && result[0][1] === result[0][2] && result[0][0] !== "") {
-                        boxes[0].style.backgroundColor = "#800080";
-                        boxes[1].style.backgroundColor = "#800080";
-                        boxes[2].style.backgroundColor = "#800080";
-
-                        if (result[0][0] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-                        return;
-                    }
-                    else if (result[1][0] === result[1][1] && result[1][1] === result[1][2] && result[1][0] !== "") {
-                        boxes[3].style.backgroundColor = "#800080";
-                        boxes[4].style.backgroundColor = "#800080";
-                        boxes[5].style.backgroundColor = "#800080";
-
-                        if (result[1][0] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-
-                    }
-                    else if (result[2][0] === result[2][1] && result[2][1] === result[2][2] && result[2][0] !== "") {
-                        boxes[6].style.backgroundColor = "#800080";
-                        boxes[7].style.backgroundColor = "#800080";
-                        boxes[8].style.backgroundColor = "#800080";
-
-                        if (result[2][0] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-
-                    }
-                    else if (result[0][0] === result[1][0] && result[1][0] === result[2][0] && result[0][0] !== "") {
-                        boxes[0].style.backgroundColor = "#800080";
-                        boxes[3].style.backgroundColor = "#800080";
-                        boxes[6].style.backgroundColor = "#800080";
-
-                        if (result[0][0] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-
-                    }
-                    else if (result[0][1] === result[1][1] && result[1][1] === result[2][1] && result[0][1] !== "") {
-                        boxes[1].style.backgroundColor = "#800080";
-                        boxes[4].style.backgroundColor = "#800080";
-                        boxes[7].style.backgroundColor = "#800080";
-
-                        if (result[0][1] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-
-                    }
-                    else if (result[0][2] === result[1][2] && result[1][2] === result[2][2] && result[0][2] !== "") {
-                        boxes[2].style.backgroundColor = "#800080";
-                        boxes[5].style.backgroundColor = "#800080";
-                        boxes[8].style.backgroundColor = "#800080";
-
-                        if (result[0][2] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-
-                    }
-                    else if (result[0][0] === result[1][1] && result[1][1] === result[2][2] && result[0][0] !== "") {
-                        boxes[0].style.backgroundColor = "#800080";
-                        boxes[4].style.backgroundColor = "#800080";
-                        boxes[8].style.backgroundColor = "#800080";
-
-                        if (result[0][0] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-
-                    } else if (result[0][2] === result[1][1] && result[1][1] === result[2][0] && result[0][2] !== "") {
-                        boxes[2].style.backgroundColor = "#800080";
-                        boxes[4].style.backgroundColor = "#800080";
-                        boxes[6].style.backgroundColor = "#800080";
-
-                        if (result[0][2] === "X") {
-                            message.textContent = `${player1Name}, congratulations you won!`;
-                        } else {
-                            message.textContent = `${player2Name}, congratulations you won!`;
-                        }
-                    }
-                })
             }
 
-            container.appendChild(heading);
-            container.appendChild(message)
-            container.appendChild(board);
-        });
+            board.addEventListener("click", (e) => {
+                if (gameOver) return;
+                if (!e.target.classList.contains("box")) return;
+                if (e.target.textContent !== "") return;
+
+                e.target.textContent = currentPlayer;
+
+                let win = isWinner(currentPlayer, Number(e.target.dataset.index));
+                console.log(win)
+
+                if (win) {
+                    msg.textContent = `${currentPlayer === "X" ? player1.value : player2.value}, congratulations you won`;
+
+                    gameOver = true;
+                } else {
+                    msg.textContent = `${currentPlayer === "X" ? player2.value : player1.value}, you're up`;
+                    currentPlayer = currentPlayer === "X" ? "O" : "X";
+                }
+            })
+        })
 
 
+
+        // winning logic
+        const boardData = new Array(9);
+        const winningConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8],
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [2, 4, 6],
+            [0, 4, 8]
+        ]
+
+        function isWinner(currentPlayer, index) {
+            if (boardData[index]) return;
+            boardData[index] = currentPlayer;
+
+            let boxes = document.querySelectorAll(".box");
+
+            for (const [a, b, c] of winningConditions) {
+
+                if (boardData[a] &&
+                    boardData[a] === boardData[b] &&
+                    boardData[a] === boardData[c]
+                ) {
+                    console.log(a, b, c)
+                    console.log(boxes)
+                    boxes[a].style.backgroundColor = "#800080"
+                    boxes[b].style.backgroundColor = "#800080"
+                    boxes[c].style.backgroundColor = "#800080"
+                    return true;
+                }
+            }
+            return false;
+        }
 
     </script>
 

@@ -107,7 +107,7 @@
         const board = document.querySelector(".board");
         const msg = document.querySelector(".message");
 
-        let currentPlayer = "X";
+        let currentPlayer = "x";
         let gameOver = false;
         let gameStarted = false;
 
@@ -169,7 +169,7 @@
             setup.classList.add("hidden");
             gameArea.classList.remove("hidden");
 
-            currentPlayer = "X";
+            currentPlayer = "x";
             gameOver = false;
             boardData.fill(undefined);
 
@@ -188,14 +188,14 @@
             const win = isWinner(currentPlayer, index);
 
             if (win) {
-                const winnerName = currentPlayer === "X" ? player1.value : player2.value;
+                const winnerName = currentPlayer === "x" ? player1.value : player2.value;
                 msg.textContent = `${winnerName} congratulations you won!`;
                 gameOver = true;
                 return;
             }
 
-            currentPlayer = currentPlayer === "X" ? "O" : "X";
-            msg.textContent = `${currentPlayer === "X" ? player1.value : player2.value}, you're up`;
+            currentPlayer = currentPlayer === "x" ? "o" : "x";
+            msg.textContent = `${currentPlayer === "x" ? player1.value : player2.value}, you're up`;
         });
     </script>
 </body>
